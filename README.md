@@ -1,5 +1,7 @@
 devise_cas_authenticatable [![Build Status](https://secure.travis-ci.org/nbudin/devise_cas_authenticatable.png)](http://travis-ci.org/nbudin/devise_cas_authenticatable)
 ==========================
+Modified by Eduard Pauné<br/>
+Ignores database: users are NOT stored in database.<br/>
 
 Written by Nat Budin<br/>
 Taking a lot of inspiration from [devise_ldap_authenticatable](http://github.com/cschiewek/devise_ldap_authenticatable)
@@ -73,32 +75,6 @@ to tell your app how to talk to your CAS server:
       # config.cas_follow_url = 'https://cas.myorganization.com'
       # config.cas_logout_url_param = nil
 
-      # By default, devise_cas_authenticatable will create users.  If you would rather
-      # require user records to already exist locally before they can authenticate via
-      # CAS, uncomment the following line.
-      # config.cas_create_user = false  
-    end
-
-Extra attributes
-----------------
-
-If your CAS server passes along extra attributes you'd like to save in your user records,
-using the CAS extra_attributes parameter, you can define a method in your user model called
-cas_extra_attributes= to accept these.  For example:
-
-    class User < ActiveRecord::Base
-      devise :cas_authenticatable
-      
-      def cas_extra_attributes=(extra_attributes)
-        extra_attributes.each do |name, value|
-          case name.to_sym
-          when :fullname
-            self.fullname = value
-          when :email
-            self.email = value
-          end
-        end
-      end
     end
 
 See also

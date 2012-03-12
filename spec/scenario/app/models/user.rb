@@ -1,3 +1,4 @@
 class User < ActiveRecord::Base
-  devise :cas_authenticatable, :rememberable
+  devise :cas_authenticatable
+
 end

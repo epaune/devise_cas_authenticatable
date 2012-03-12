@@ -7,6 +7,8 @@ require 'devise_cas_authenticatable/exceptions'
 
 require 'devise_cas_authenticatable/single_sign_out'
 
+require 'devise_cas_authenticatable/warden_compat'
+
 if defined?(ActiveRecord::SessionStore)
   require 'devise_cas_authenticatable/single_sign_out/session_store/active_record'
 end
@@ -60,10 +62,6 @@ module Devise
   # :rails_cache by default.
   @@cas_single_sign_out_mapping_strategy = :rails_cache
 
-  # Should devise_cas_authenticatable attempt to create new user records for
-  # unknown usernames?  True by default.
-  @@cas_create_user = true
-  
   # The model attribute used for query conditions. Should be the same as
   # the rubycas-server username_column. :username by default
   @@cas_username_column = :username
@@ -71,11 +69,7 @@ module Devise
   # Name of the parameter passed in the logout query 
   @@cas_destination_logout_param_name = nil
 
-  mattr_accessor :cas_base_url, :cas_login_url, :cas_logout_url, :cas_validate_url, :cas_destination_url, :cas_follow_url, :cas_logout_url_param, :cas_create_user, :cas_destination_logout_param_name, :cas_username_column, :cas_enable_single_sign_out, :cas_single_sign_out_mapping_strategy
-
-  def self.cas_create_user?
-    cas_create_user
-  end
+  mattr_accessor :cas_base_url, :cas_login_url, :cas_logout_url, :cas_validate_url, :cas_destination_url, :cas_follow_url, :cas_logout_url_param, :cas_destination_logout_param_name, :cas_username_column, :cas_enable_single_sign_out, :cas_single_sign_out_mapping_strategy
 
   # Return a CASClient::Client instance based on configuration parameters.
   def self.cas_client
